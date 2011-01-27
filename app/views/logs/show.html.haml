@@ -1,0 +1,14 @@
+%p#notice= notice
+
+%p
+	%strong Name:
+	= @log.name
+
+%p
+	%strong Log:
+	= @log.log
+
+%p= raw @log.logContents
+
+= link_to 'Edit', edit_log_path(@log)
+= link_to 'Back', logs_path

@@ -1,0 +1,19 @@
+%h1 Listing logs
+
+%table
+	%tr
+		%th Name
+		%th
+		%th
+		%th
+
+	- @logs.each do |log|
+		%tr
+			%td= log.name
+			%td= link_to 'Show', log
+			%td= link_to 'Edit', edit_log_path(log)
+			%td= link_to 'Destroy', log, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Log', new_log_path
