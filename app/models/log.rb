@@ -9,8 +9,10 @@ class Log < ActiveRecord::Base
       while line = file.gets
         if(line =~ /==+/)
           fileStr += "<span class=\"highlight\">#{line}</span>"
+        elsif (file.lineno % 2 == 0)
+          fileStr += "<span class=\""+ "list_line_odd" + "\">#{line}</span>"
         else
-          fileStr += "#{line}"
+          fileStr += "<span class=\""+ "list_line_even" + "\">#{line}</span>"
         end
         fileStr += "<br>"
       end
@@ -18,3 +20,4 @@ class Log < ActiveRecord::Base
     self.logContents = fileStr
   end
 end
+

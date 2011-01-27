@@ -58,3 +58,12 @@ div.field, div.actions {
 .highlight {
   background-color:#C2DFFF;	
 }
+
+.list_line_even {
+  background:#e0f8f8;
+}
+
+.list_line_odd {
+  background:#f8b0f8;
+}
+
