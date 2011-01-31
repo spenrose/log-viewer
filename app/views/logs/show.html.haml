@@ -1,14 +1,20 @@
 %p#notice= notice
 
 %p
-	%strong Name:
-	= @log.name
+  %strong Name:
+  = @log.name
 
 %p
-	%strong Log:
-	= @log.log
+  %strong Log:
+  = @log.log
 
-%p= raw @log.logContents
+- @log.logContents.each do |log|
+  .header
+    = log.timestamp
+    = log.level
+    = log.thread
+    = log.log_class
+  .message= simple_format(log.message).gsub(/<p>|<\/p>/, "")
 
 = link_to 'Edit', edit_log_path(@log)
 = link_to 'Back', logs_path
