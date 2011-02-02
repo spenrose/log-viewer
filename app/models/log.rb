@@ -21,7 +21,9 @@ class Log < ActiveRecord::Base
     #self.logContents = fileStr
   end
   
-  
+  # Use to get log events that are of a certain above log_level
+  # log_level: DEBUG will return log events of level "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
+  #log_level: FATAL will return log events of level "FATAL"
   def getRestrictedLogEvents(log_level)
     logger.info "Restricting log contents for: " + log_level
     # get all the allowed log levels
