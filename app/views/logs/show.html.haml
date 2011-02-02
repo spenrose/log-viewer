@@ -8,13 +8,7 @@
   %strong Log:
   = @log.log
 
-- @log.logContents.each do |log|
-  .header
-    = log.timestamp
-    = log.level
-    = log.thread
-    = log.log_class
-  .message= simple_format(log.message).gsub(/<p>|<\/p>/, "")
+= render :partial => "logContent", :collection => @log.getRestrictedLogEvents("ERROR")
 
 = link_to 'Edit', edit_log_path(@log)
 = link_to 'Back', logs_path
