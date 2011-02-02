@@ -1,0 +1,7 @@
+.header
+  = log_event.timestamp
+  = log_event.level
+  = log_event.thread
+  = log_event.log_class
+.message
+  = simple_format(log_event.message).gsub(/<p>|<\/p>/, "")

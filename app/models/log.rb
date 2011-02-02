@@ -62,7 +62,7 @@ class Log < ActiveRecord::Base
     possible_log_levels = [ "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
     
     allowed_log_levels = case log_level
-      when "TRACE" then ["TRACE"]
+      when "TRACE" then ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
       when "DEBUG" then ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
       when "INFO" then ["INFO", "WARN", "ERROR", "FATAL"]
       when "WARN" then ["WARN", "ERROR", "FATAL"]
