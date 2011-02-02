@@ -2,44 +2,57 @@ require 'log_parser/log_parser'
 class Log < ActiveRecord::Base
   has_attached_file :log
   
-  attr_accessor :logContents
+  attr_accessor :events
+  attr_accessor :level
   
-  def logContents
+  def setupLog
     filePath = "#{Rails.root}/public#{self.log.url(:original, false)}"
     logger.info "Parsing log file #{filePath}"
     logParser = LogParser.new ("TIMESTAMP [THREAD] LEVEL CLASS - MESSAGE", filePath)
-    log_events = logParser.parseFile
-  
-    self.logContents = log_events
-    
-    #fileStr = ""
-    #File.open("#{Rails.root}/public#{self.log.url(:original, false)}", "r") do |file|
-    #  while line = file.gets
-    #    fileStr += line
-    #  end
-    #end
-    #self.logContents = fileStr
+    self.events = logParser.parseFile
+    # Set default log level to DEBUG
+    self.level = "DEBUG"
   end
   
-  # Use to get log events that are of a certain above log_level
+  # Use to get log events above self.log_level
   # log_level: DEBUG will return log events of level "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
   #log_level: FATAL will return log events of level "FATAL"
-  def getRestrictedLogEvents(log_level)
-    logger.info "Restricting log contents for: " + log_level
+  #def getEventsForCurrentLogLevel()
+    #logger.info "Restricting log contents for: " + self.log_level
     # get all the allowed log levels
-    allowed_log_levels = self.getAllowedLogLevels(log_level)
-    allowed_log_events = Array.new
+    #allowed_log_levels = self.getAllowedLogLevels(self.log_level)
+    #allowed_log_events = Array.new
     
     # get a subset of log events that according to the allowed_log_levels
-    self.logContents.each do |log_event|
-      if allowed_log_levels.include?(log_event.thread)
+    #self.events.each do |log_event|
+      #if allowed_log_levels.include?(log_event.thread)
         #logger.debug "Found log_event: #{log_event.to_s} with level #{log_level}"
-        allowed_log_events << log_event
-      end
-    end
-    
-    allowed_log_events
-  end
+        #allowed_log_events << log_event
+      #end
+    #end
+    #allowed_log_events
+  #end
+  
+  # Use to get log events that are of a certain above log_level
+   # log_level: DEBUG will return log events of level "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
+   #log_level: FATAL will return log events of level "FATAL"
+   def getRestrictedLogEvents(log_level_input)
+     self.setupLog
+     logger.info "Restricting log contents for: " + log_level_input
+     #get all the allowed log levels
+     allowed_log_levels = self.getAllowedLogLevels(log_level_input)
+     allowed_log_events = Array.new
+
+     # get a subset of log events that according to the allowed_log_levels
+     self.events.each do |log_event|
+      if allowed_log_levels.include?(log_event.thread)
+         logger.debug "Found log_event: #{log_event.to_s} with level #{log_level_input}"
+         allowed_log_events << log_event
+       end
+     end
+
+     allowed_log_events
+   end
   
   # Use to get allowed log levels for a log_level
   #poosible log levels: TRACE, DEBUG, INFO, WARN, ERROR, FATAL
