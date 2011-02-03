@@ -14,6 +14,7 @@ class LogsController < ApplicationController
   # GET /logs/1.xml
   def show
     @log = Log.find(params[:id])
+    @log.setupLog
  
     respond_to do |format|
       format.html # show.html.erb

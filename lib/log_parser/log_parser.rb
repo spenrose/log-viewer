@@ -10,6 +10,7 @@ class LogParser
   
   def parseFile
     # Create regex 
+    groupOrder = @logFormat.scan(/TIMESTAMP|CLASS|LEVEL|THREAD|MESSAGE/)
     regex = createRegex
     
     # Save each log entry in this array of LogEvent
@@ -27,6 +28,7 @@ class LogParser
           
             # Add previous LogEvent to array 
             if !log_event.nil?
+              puts log_event
               log_events << log_event
             end
           
@@ -36,7 +38,7 @@ class LogParser
           
             # Parse each grouping from Regex to add to LogEvent
             count = 0
-            @groupOrder.each do |group|
+            groupOrder.each do |group|
               count = count + 1
               case group
               when "TIMESTAMP"
@@ -72,7 +74,6 @@ class LogParser
   
   def createRegex
     regex = @logFormat
-    @groupOrder = Array.new
     
     #clean up
     regex.gsub!(/\s/, "\\s")
@@ -94,22 +95,18 @@ class LogParser
     #Timestamp
     timestampRegex = timestampRegex()
     regex.gsub!(/TIMESTAMP/, "(#{timestampRegex})")
-    @groupOrder << "TIMESTAMP"
     
     # Logger
     
     # Level
     levelRegex = levelRegex()
     regex.gsub!(/LEVEL/, "(#{levelRegex})")
-    @groupOrder << "LEVEL"
     
     # Thread
     regex.gsub!(/THREAD/, "(.*)")
-    @groupOrder << "THREAD"
     
     # Class
     regex.gsub!(/CLASS/, "(.*)")
-    @groupOrder << "CLASS"
     
     # File
     
@@ -121,7 +118,6 @@ class LogParser
     
     # Message 
     regex.gsub!(/MESSAGE/, "(.*)")
-    @groupOrder << "MESSAGE"
     
     # NDC
     
