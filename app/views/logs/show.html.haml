@@ -8,7 +8,7 @@
   %strong Log:
   = @log.log
 
-= render :partial => "log_event", :collection => @log.events
+= render :partial => "log_event", :collection => @log.getRestrictedLogEvents("ERROR")
 
 = link_to 'Edit', edit_log_path(@log)
 = link_to 'Back', logs_path

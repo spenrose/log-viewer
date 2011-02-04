@@ -25,7 +25,7 @@ class Log < ActiveRecord::Base
     
     # get a subset of log events that according to the allowed_log_levels
     self.events.each do |log_event|
-      if allowed_log_levels.include?(log_event.thread)
+      if allowed_log_levels.include?(log_event.level)
         logger.debug "Found log_event: #{log_event.to_s} with level #{log_level}"
         allowed_log_events << log_event
       end
@@ -45,12 +45,11 @@ class Log < ActiveRecord::Base
 
      # get a subset of log events that according to the allowed_log_levels
      self.events.each do |log_event|
-      if allowed_log_levels.include?(log_event.thread)
+      if allowed_log_levels.include?(log_event.level)
          logger.debug "Found log_event: #{log_event.to_s} with level #{log_level_input}"
          allowed_log_events << log_event
        end
      end
-
      allowed_log_events
    end
   
