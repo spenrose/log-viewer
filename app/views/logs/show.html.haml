@@ -8,7 +8,13 @@
   %strong Log:
   = @log.log
 
-= render :partial => "log_event", :collection => @log.getRestrictedLogEvents("ERROR")
+-#render :partial => "log_event", :collection => @log.getRestrictedLogEvents("DEBUG")
 
+= form_for @log, :url => {:action => :show}, :remote => true  do |f|
+  =f.select :user_defined_level, Log::LOG_LEVELS, :prompt => "Select a log level"
+  =f.submit "Show Log Events"
+
+#log_events
+  
 = link_to 'Edit', edit_log_path(@log)
 = link_to 'Back', logs_path

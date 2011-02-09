@@ -14,13 +14,15 @@ class LogsController < ApplicationController
   # GET /logs/1.xml
   def show
     @log = Log.find(params[:id])
- 
+    logger.info "Selected log level #{params[:user_defined_level]}"
+    
     respond_to do |format|
       format.html # show.html.erb
+      format.js { render :update do |page|  page.replace_html  'log_events', :partial => 'log_event', :collection => @log.getRestrictedLogEvents("DEBUG") end}
       format.xml  { render :xml => @log }
     end
   end
-
+  
   # GET /logs/new
   # GET /logs/new.xml
   def new
